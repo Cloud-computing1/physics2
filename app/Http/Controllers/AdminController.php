@@ -13,6 +13,7 @@ use App\Models\exp_ans3;
 use App\Models\exp_ans4;
 use App\Models\stu_info;
 use App\Models\student;
+use App\Models\teacher;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -180,4 +181,10 @@ class AdminController extends Controller
         }
     }
 
+    public function get_teachers_info(){
+        $res = teacher::get_teachers_info();
+        return $res ?
+            json_success("查询成功!", $res, 200) :
+            json_fail("查询失败!", null, 100);
+    }
 }
