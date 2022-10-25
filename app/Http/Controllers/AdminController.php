@@ -368,7 +368,8 @@ class AdminController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function get_class(Request $request){
+    public function get_class(Request $request)
+    {
         $major = $request['major'];
         $res = clas::get_class($major);
         return $res ?
@@ -376,4 +377,36 @@ class AdminController extends Controller
             json_fail('查询班级失败', null, 100);
     }
 
+    /**
+     * 管理员获取教师教学专业
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function get_teach_major_a(Request $request)
+    {
+        $teacher_id = $request['teacher_id'];
+        $res = teach_class::get_teach_major($teacher_id);
+        return $res ?
+        json_success('查询专业成功', $res, 200) :
+        json_fail('查询专业失败', null, 100);
+    }
+
+    /**
+     * 管理员获取教师教学班级
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function get_teach_class_a(Request $request)
+    {
+        $array = array(
+            'teacher_id' => $request['teacher_id'],
+            'major' => $request['major']
+        );
+        $res = teach_class::get_teach_class($array);
+        return $res ?
+            json_success('查询专业成功', $res, 200) :
+            json_fail('查询专业失败', null, 100);
+    }
 }

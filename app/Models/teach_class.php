@@ -108,4 +108,45 @@ class teach_class extends Model
             return false;
         }
     }
+
+    /**
+     * 获取教师教学的专业
+     *
+     * @param $teacher_id
+     * @return false
+     */
+    public static function get_teach_major($teacher_id)
+    {
+        try {
+            $res = self::select('major')
+                ->where('teacher_id', '=', $teacher_id)
+                ->orderBy('major')
+                ->get();
+            return $res;
+        } catch (\Exception $e) {
+            logError('获取教师教学专业失败', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     * 获取教师教学的班级
+     *
+     * @param $request
+     * @return false
+     */
+    public static function get_teach_class($array)
+    {
+        try {
+            $res = self::select('class')
+                ->where('teacher_id', '=', $array['teacher_id'])
+                ->where('major', '=', $array['major'])
+                ->orderBy('class')
+                ->get();
+            return $res;
+        } catch (\Exception $e) {
+            logError('获取教师教学班级失败', [$e->getMessage()]);
+            return false;
+        }
+    }
 }
