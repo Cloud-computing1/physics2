@@ -26,3 +26,4 @@ Route::get('/admin/get_teachers_info', 'AdminController@get_teachers_info');
 Route::post('/admin/del_teacher', 'AdminController@del_teacher');
 Route::post('/admin/add_teacher', 'AdminController@add_teacher');
 Route::post('/admin/add_new_class', 'AdminController@add_new_class');
+Route::post('/admin/del_class', 'AdminController@del_class');

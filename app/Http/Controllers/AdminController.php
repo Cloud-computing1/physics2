@@ -14,6 +14,7 @@ use App\Models\exp_ans3;
 use App\Models\exp_ans4;
 use App\Models\stu_info;
 use App\Models\student;
+use App\Models\teach_class;
 use App\Models\teacher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -238,7 +239,8 @@ class AdminController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function add_new_class(Request $request){
+    public function add_new_class(Request $request)
+    {
         $cnt = clas::add_class_check($request);
         if ($cnt == 0) {
             $res = clas::add_new_class($request);
@@ -248,5 +250,59 @@ class AdminController extends Controller
         } else {
             return json_fail('添加班级失败，目标班级已存在', $request['class'], 100);
         }
+    }
+
+    public function del_class(Request $request)
+    {
+        $class = $request['class'];
+        $status = true;
+        $status1 = true;
+        $status2 = true;
+        $status3 = true;
+        $status4 = true;
+        $status_teach = true;
+
+        if(!clas::find_someclass($class)){
+            return json_fail('删除失败，当前班级不存在', $class, 100);
+        }else{
+            clas::del_class($class);
+        }
+
+        // 将学生信息表中，相关班级的学生移出把班级
+        if(stu_info::find_someclass($class)){
+            $status = false;
+            $status = stu_info::remove_class($class);
+        }
+
+        // 同时修改他们的成绩表中的班级
+        if (exp_1::find_someclass($class)) {
+            $status1 = false;
+            $status1 = exp_1::remove_class($class);
+        }
+        if (exp_2::find_someclass($class)) {
+            $status2 = false;
+            $status2 = exp_2::remove_class($class);
+        }
+        if (exp_3::find_someclass($class)) {
+            $status3 = false;
+            $status3 = exp_3::remove_class($class);
+        }
+        if (exp_4::find_someclass($class)) {
+            $status4 = false;
+            $status4 = exp_4::remove_class($class);
+        }
+
+        // 在教学班级记录表中删除
+        if (teach_class::find_someclass($class)) {
+            $status_teach = false;
+            $status_teach = teach_class::del_class($class);
+        }
+
+        if ($status && $status1 && $status2 && $status3 && $status4 && $status_teach) {
+            return json_success('删除班级成功', $class, 200);
+        } else {
+            return json_fail('删除班级失败', null, 100);
+        }
+
     }
 }

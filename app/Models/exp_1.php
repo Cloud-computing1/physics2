@@ -51,8 +51,51 @@ class exp_1 extends Model
             $cnt = self::where('stu_id', '=', $stu_id)
                 ->delete();
             return $cnt;
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             logError('在实验一中删除学生失败！', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     * 查询实验一中是否存在此班级的成绩记录
+     *
+     * @param $class
+     * @return bool
+     */
+    public static function find_someclass($class)
+    {
+        try {
+            $cnt = self::select('id')
+                ->where('class', '=', $class)
+                ->count();
+            if ($cnt > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (\Exception $e) {
+            logError('在实验一中查找班级' . $class . '失败！', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     * 从实验成绩记录表中移除学生的班级
+     *
+     * @param $class
+     * @return false
+     */
+    public static function remove_class($class)
+    {
+        try {
+            $cnt = self::where('class', '=', $class)->update([
+                'class' => null
+            ]);
+            return $cnt;
+        } catch (\Exception $e) {
+            logError('在实验一中移出学生班级失败！', [$e->getMessage()]);
             return false;
         }
     }

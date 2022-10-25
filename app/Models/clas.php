@@ -22,7 +22,8 @@ class clas extends Model
      * @param Request $request
      * @return false
      */
-    public static function add_class_check(Request $request){
+    public static function add_class_check(Request $request)
+    {
         try {
             $cnt = self::select('id')
                 ->where('major', '=', $request['major'])
@@ -51,6 +52,51 @@ class clas extends Model
             return true;
         } catch (\Exception $e) {
             logError('添加班级' . $request['class'] . '失败！', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     * 查询是否存在这个班级
+     *
+     * @param $class
+     * @return bool
+     */
+    public static function find_someclass($class)
+    {
+        try {
+            $cnt = self::select('id')
+                ->where('class', '=', $class)
+                ->count();
+            if ($cnt > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (\Exception $e) {
+            logError('在班级记录表中查找班级' . $class . '失败！', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     * 删除班级
+     *
+     * @param Request $request
+     * @return false
+     */
+    public static function del_class($class)
+    {
+        try {
+
+
+            self::where('class', '=', $class)
+                ->delete();
+
+            return true;
+        } catch (\Exception $e) {
+            logError('删除班级' . $class . '失败！', [$e->getMessage()]);
             return false;
         }
     }
