@@ -89,11 +89,8 @@ class clas extends Model
     public static function del_class($class)
     {
         try {
-
-
             self::where('class', '=', $class)
                 ->delete();
-
             return true;
         } catch (\Exception $e) {
             logError('删除班级' . $class . '失败！', [$e->getMessage()]);

@@ -27,3 +27,5 @@ Route::post('/admin/del_teacher', 'AdminController@del_teacher');
 Route::post('/admin/add_teacher', 'AdminController@add_teacher');
 Route::post('/admin/add_new_class', 'AdminController@add_new_class');
 Route::post('/admin/del_class', 'AdminController@del_class');
+Route::post('/admin/add_class_to', 'AdminController@add_class_to');
+Route::post('/admin/del_class_from', 'AdminController@del_class_from');

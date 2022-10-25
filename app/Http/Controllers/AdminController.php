@@ -252,6 +252,12 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * 管理员-班级管理-删除一个班级
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function del_class(Request $request)
     {
         $class = $request['class'];
@@ -262,14 +268,14 @@ class AdminController extends Controller
         $status4 = true;
         $status_teach = true;
 
-        if(!clas::find_someclass($class)){
+        if (!clas::find_someclass($class)) {
             return json_fail('删除失败，当前班级不存在', $class, 100);
-        }else{
+        } else {
             clas::del_class($class);
         }
 
         // 将学生信息表中，相关班级的学生移出把班级
-        if(stu_info::find_someclass($class)){
+        if (stu_info::find_someclass($class)) {
             $status = false;
             $status = stu_info::remove_class($class);
         }
@@ -302,6 +308,43 @@ class AdminController extends Controller
             return json_success('删除班级成功', $class, 200);
         } else {
             return json_fail('删除班级失败', null, 100);
+        }
+    }
+
+    /**
+     * 给老师添加教学班级
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function add_class_to(Request $request)
+    {
+        $class = $request['class'];
+        if (teach_class::find_someclass($class)) {
+            return json_fail('此班级已有教师', $class, 100);
+        }
+        $res = teach_class::add_class_to($request);
+        return $res ?
+            json_success('添加教学班级成功', $request['class'], 200) :
+            json_fail('添加教学班级失败', null, 100);
+    }
+
+    /**
+     * 为老师删除教学班级
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function del_class_from(Request $request)
+    {
+        $class = $request['class'];
+        if (teach_class::find_someclass($class)) {
+            $res = teach_class::del_class_from($request);
+            return $res ?
+                json_success('删除教学班级成功', $request['class'], 200) :
+                json_fail('删除教学班级失败', null, 100);
+        } else {
+            return json_fail('删除教学班级失败', null, 100);
         }
 
     }

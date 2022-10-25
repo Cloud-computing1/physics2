@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class teach_class extends Model
 {
@@ -56,6 +57,54 @@ class teach_class extends Model
             }
         } catch (\Exception $e) {
             logError('在教学班级记录表中删除班级' . $class . '失败！', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     * 为老师添加教学的班级
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public static function add_class_to(Request $request)
+    {
+        try {
+            $cnt = self::create([
+                'teacher_id' => $request['teacher_id'],
+                'teacher_name' => $request['teacher_name'],
+                'major' => $request['major'],
+                'class' => $request['class']
+            ])->count();
+            if ($cnt > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            logError('为老师' . $request['teacher_name'] . '添加教学班级' . $request['class'] . '失败！', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     * 为老师删除某个教学班级
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public static function del_class_from(Request $request)
+    {
+        try {
+            $cnt = self::where('class', '=', $request['class'])
+                ->where('teacher_id','=',$request['teacher_id'])->delete();
+            if ($cnt > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            logError('在教学班级记录表中删除班级' . $request['class'] . '失败！', [$e->getMessage()]);
             return false;
         }
     }
