@@ -12,6 +12,7 @@ use App\Models\exp_ans1;
 use App\Models\exp_ans2;
 use App\Models\exp_ans3;
 use App\Models\exp_ans4;
+use App\Models\major;
 use App\Models\stu_info;
 use App\Models\student;
 use App\Models\teach_class;
@@ -346,6 +347,14 @@ class AdminController extends Controller
         } else {
             return json_fail('删除教学班级失败', null, 100);
         }
-
     }
+
+    public function get_majors()
+    {
+        $res = major::get_majors();
+        return $res ?
+            json_success('查询专业成功', $res, 200) :
+            json_fail('查询专业失败', null, 100);
+    }
+
 }
