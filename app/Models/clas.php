@@ -97,4 +97,24 @@ class clas extends Model
             return false;
         }
     }
+
+    /**
+     * 获取所选专业下的班级
+     *
+     * @param $major
+     * @return
+     */
+    public static function get_class($major)
+    {
+        try {
+            $res = self::select('class')
+                ->where('major', '=', $major)
+                ->orderBy('class')
+                ->get();
+            return $res;
+        } catch (\Exception $e) {
+            logError('获取专业失败', [$e->getMessage()]);
+            return false;
+        }
+    }
 }

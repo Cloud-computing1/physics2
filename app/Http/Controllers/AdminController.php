@@ -349,12 +349,31 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * 获取所有的专业
+     *
+     * @return JsonResponse
+     */
     public function get_majors()
     {
         $res = major::get_majors();
         return $res ?
             json_success('查询专业成功', $res, 200) :
             json_fail('查询专业失败', null, 100);
+    }
+
+    /**
+     * 获取所选专业下的班级
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function get_class(Request $request){
+        $major = $request['major'];
+        $res = clas::get_class($major);
+        return $res ?
+            json_success('查询班级成功', $res, 200) :
+            json_fail('查询班级失败', null, 100);
     }
 
 }

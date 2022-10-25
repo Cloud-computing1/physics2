@@ -30,3 +30,4 @@ Route::post('/admin/del_class', 'AdminController@del_class');
 Route::post('/admin/add_class_to', 'AdminController@add_class_to');
 Route::post('/admin/del_class_from', 'AdminController@del_class_from');
 Route::get('/admin/get_majors', 'AdminController@get_majors');
+Route::post('/admin/get_class', 'AdminController@get_class');

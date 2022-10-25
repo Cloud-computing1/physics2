@@ -15,8 +15,22 @@ class major extends Model
     // 指定不允许自动填充的字段，字段修改的黑名单
     protected $guarded = [];
 
-    public static function get_majors(){
-        $res = self::select('major_name as major')->get();
-        return $res;
+    /**
+     * 获取所有专业
+     *
+     * @return mixed
+     */
+    public static function get_majors()
+    {
+        try {
+            $res = self::select('major_name as major')
+                ->orderBy('major')
+                ->get();
+            return $res;
+        } catch (\Exception $e) {
+            logError('获取专业失败', [$e->getMessage()]);
+            return false;
+        }
+
     }
 }
