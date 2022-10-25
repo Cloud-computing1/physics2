@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\admin;
+use App\Models\clas;
 use App\Models\exp_1;
 use App\Models\exp_2;
 use App\Models\exp_3;
@@ -14,6 +15,7 @@ use App\Models\exp_ans4;
 use App\Models\stu_info;
 use App\Models\student;
 use App\Models\teacher;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -23,7 +25,7 @@ class AdminController extends Controller
 //        $cnt = admin::regi_check($request);
 //        if ($cnt == 0) {
 //            // 对密码进行加密
-//            $regi = self::userHandle($request);
+//            $regi = self::adminHandle($request);
 //            // 创建用户
 //            $account = admin::register($regi);
 //            return $account ?
@@ -35,19 +37,19 @@ class AdminController extends Controller
 //        }
 //    }
 //
-//    // 密码加密
-//    protected function userHandle($request)
-//    {
-//        // Bcrypt是单向Hash加密算法，类似Pbkdf2算法 不可反向破解生成明文。
-//        $request['password'] = bcrypt($request['password']);
-//        return $request;
-//    }
+    // 密码加密
+    protected function adminHandle($request)
+    {
+        // Bcrypt是单向Hash加密算法，类似Pbkdf2算法 不可反向破解生成明文。
+        $request['password'] = bcrypt($request['password']);
+        return $request;
+    }
 
     /**
      * 管理员登录
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function login(Request $request)
     {
@@ -77,7 +79,7 @@ class AdminController extends Controller
      *
      * @param $token
      * @param $msg
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     protected function respondWithToken($token, $msg)
     {
@@ -91,7 +93,7 @@ class AdminController extends Controller
     /**
      * 获取所有学生的信息
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function get_stu_detail()
     {
@@ -105,7 +107,7 @@ class AdminController extends Controller
      * 修改某个学生的班级
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function mod_stu_info(Request $request)
     {
@@ -119,7 +121,7 @@ class AdminController extends Controller
      * 通过传入的id，删除某个学生
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function del_stu(Request $request)
     {
@@ -176,15 +178,75 @@ class AdminController extends Controller
             $status1 && $status2 && $status3 && $status4 &&
             $status_ans1 && $status_ans2 && $status_ans3 && $status_ans4) {
             return json_success('删除学生成功', $stu_id, 200);
-        }else{
+        } else {
             return json_fail('删除学生失败', null, 100);
         }
     }
 
-    public function get_teachers_info(){
+    /**
+     * 获取所有老师的信息
+     *
+     * @return JsonResponse
+     */
+    public function get_teachers_info()
+    {
         $res = teacher::get_teachers_info();
         return $res ?
-            json_success("查询成功!", $res, 200) :
-            json_fail("查询失败!", null, 100);
+            json_success("查询所有老师成功!", $res, 200) :
+            json_fail("查询所有老师失败!", null, 100);
+    }
+
+    /**
+     * 通过工号找到并删除老师
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function del_teacher(Request $request)
+    {
+        $teacher_id = $request['teacher_id'];
+        $res = teacher::del_teacher($teacher_id);
+        return $res ?
+            json_success("删除老师成功!", $teacher_id, 200) :
+            json_fail("删除老师失败!", null, 100);
+    }
+
+    /**
+     * 添加教师
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function add_teacher(Request $request)
+    {
+        $teacher_id = $request['teacher_id'];
+        $cnt = teacher::add_check($teacher_id);
+        if ($cnt == 0) {
+            $request = self::adminHandle($request);
+            $res = teacher::add_teacher($request);
+            return $res ?
+                json_success('添加老师成功', $teacher_id, 200) :
+                json_fail('添加老师失败', null, 100);
+        } else {
+            return json_fail('添加老师失败，账号已被注册', $teacher_id, 100);
+        }
+    }
+
+    /**
+     * 添加新的班级
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function add_new_class(Request $request){
+        $cnt = clas::add_class_check($request);
+        if ($cnt == 0) {
+            $res = clas::add_new_class($request);
+            return $res ?
+                json_success('添加班级成功', $request['class'], 200) :
+                json_fail('添加班级失败', null, 100);
+        } else {
+            return json_fail('添加班级失败，目标班级已存在', $request['class'], 100);
+        }
     }
 }

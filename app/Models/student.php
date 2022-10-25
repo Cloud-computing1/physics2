@@ -47,11 +47,11 @@ class student extends Model
     public static function del_stu($stu_id)
     {
         try {
-            self::where('stu_id','=',$stu_id)->delete();
-            DB::table('stu_info')->where('stu_id','=',$stu_id)->delete();
+            self::where('stu_id', '=', $stu_id)->delete();
+            DB::table('stu_info')->where('stu_id', '=', $stu_id)->delete();
             return true;
         } catch (\Exception $e) {
-            logError('删除学生失败！', [$e->getMessage()]);
+            logError('删除学生' . $stu_id . '失败！', [$e->getMessage()]);
             return false;
         }
     }

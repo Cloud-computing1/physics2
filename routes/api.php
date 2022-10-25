@@ -20,6 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/admin/login','AdminController@login');
 //Route::post('/admin/regi','AdminController@register');
 Route::get('/admin/get_students_info', 'AdminController@get_stu_detail');
-Route::post('admin/mod_stu_info', 'AdminController@mod_stu_info');
-Route::post('admin/del_stu', 'AdminController@del_stu');
-Route::get('admin/get_teachers_info', 'AdminController@get_teachers_info');
+Route::post('/admin/mod_stu_info', 'AdminController@mod_stu_info');
+Route::post('/admin/del_stu', 'AdminController@del_stu');
+Route::get('/admin/get_teachers_info', 'AdminController@get_teachers_info');
+Route::post('/admin/del_teacher', 'AdminController@del_teacher');
+Route::post('/admin/add_teacher', 'AdminController@add_teacher');
+Route::post('/admin/add_new_class', 'AdminController@add_new_class');
