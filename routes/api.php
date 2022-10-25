@@ -16,3 +16,23 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/admin/login','AdminController@login');
+//Route::post('/admin/regi','AdminController@register');
+Route::get('/admin/get_students_info', 'AdminController@get_stu_detail');
+Route::post('/admin/mod_stu_info', 'AdminController@mod_stu_info');
+Route::post('/admin/del_stu', 'AdminController@del_stu');
+Route::get('/admin/get_teachers_info', 'AdminController@get_teachers_info');
+Route::post('/admin/del_teacher', 'AdminController@del_teacher');
+Route::post('/admin/add_teacher', 'AdminController@add_teacher');
+Route::post('/admin/add_new_class', 'AdminController@add_new_class');
+Route::post('/admin/del_class', 'AdminController@del_class');
+Route::post('/admin/add_class_to', 'AdminController@add_class_to');
+Route::post('/admin/del_class_from', 'AdminController@del_class_from');
+Route::get('/admin/get_majors', 'AdminController@get_majors');
+Route::post('/admin/get_class', 'AdminController@get_class');
+Route::post('/admin/get_teach_major_a', 'AdminController@get_teach_major_a');
+Route::post('/admin/get_teach_class_a', 'AdminController@get_teach_class_a');
+Route::post('/admin/get_teach_major_t', 'TeacherController@get_teach_major_t');
+Route::post('/admin/get_teach_class_t', 'TeacherController@get_teach_class_t');
+
