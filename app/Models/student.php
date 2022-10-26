@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class student extends Authenticatable implements JWTSubject
@@ -18,7 +19,7 @@ class student extends Authenticatable implements JWTSubject
     protected $table = 'student';
     protected $remeberTokenName = NULL;
     protected $guarded = [];
-    protected $fillable=['stu_id','password','email'];
+    protected $fillable=[];
 
 
 
@@ -79,7 +80,8 @@ class student extends Authenticatable implements JWTSubject
         } catch (\Exception $e) {
             logError('添加用户失败!', [$e->getMessage()]);
             die($e->getMessage());
-
+        }
+    }
 
     /**
      * 查询所有学生的信息

@@ -111,7 +111,7 @@ class expController extends Controller
     public function exp_3(Request $request){
         $stu_id = auth('api')->user()->stu_id;
         $class = DB::table('stu_info')->where('stu_id',$stu_id)->value('class');//利用学号查找邮件
-        $cnt = exp_ans1::checknumber2($stu_id);
+        $cnt = exp_ans3::checknumber3($stu_id);
         if($cnt == 0)
         {
             $data = $request->all();
@@ -213,7 +213,7 @@ class expController extends Controller
     public function exp_4(Request $request){
         $stu_id = auth('api')->user()->stu_id;
         $class = DB::table('stu_info')->where('stu_id',$stu_id)->value('class');//利用学号查找班级
-        $cnt = exp_ans1::checknumber2($stu_id);
+        $cnt = exp_ans4::checknumber4($stu_id);
         if ($cnt == 0){
             $data = $request->all();
             $obj_grade = 0;

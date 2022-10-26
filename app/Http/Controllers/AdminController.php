@@ -56,7 +56,7 @@ class AdminController extends Controller
     public function login(Request $request)
     {
         $credentials = self::get_credentials($request);
-        $token = auth('api')->attempt($credentials);
+        $token = auth('admin')->attempt($credentials);
         if (!$token) {
             return json_fail('登录失败', ['error' => 'Unauthorized'], 401);
 

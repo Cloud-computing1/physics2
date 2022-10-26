@@ -60,116 +60,117 @@ class exp_ans4 extends Model
 
     //欧姆表的安装与设计
     public static function Test4($a1,$a2,$a3,$b1,$b2,$b3,$b4,$b5,$b6,$b7,$b8,$c1,$c2,$c3,$d1,
-                                 $d2,$d3,$obj_grade,$stu_id,$class){
-        if ($a1 == 500.0){
+                                 $d2,$d3,$obj_grade,$stu_id,$class)
+    {
+        if ($a1 == 500.0) {
             $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($a2 == 560.0){
+        if ($a2 == 560.0) {
             $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($a3 == 1.5){
+        if ($a3 == 1.5) {
             $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
-        if ($b1 == 1.5){
+        if ($b1 == 1.5) {
             $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
-        if ($b2 == 500.0){
+        if ($b2 == 500.0) {
             $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
-        if ($b3 == 560.0){
+        if ($b3 == 560.0) {
             $obj_grade += 5;
-        }else{
-            $obj_grade += 0;
-        }
-
-
-        if ($b4 == 2440.0){
-            $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($b5 == 1.5){
+        if ($b4 == 2440.0) {
             $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($b6 == 2440.0){
+        if ($b5 == 1.5) {
             $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($b7 == 560.0){
+        if ($b6 == 2440.0) {
             $obj_grade += 5;
-        }else{
-            $obj_grade += 0;
-        }
-
-        if ($b8 == 43.5){
-            $obj_grade += 5;
-        }else{
-            $obj_grade += 0;
-        }
-
-        if ($c1<=2450 && $c1>=2390){
-            $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($c2<=43 && $c2>=45){
+        if ($b7 == 560.0) {
             $obj_grade += 5;
-        }else{
+        } else {
+            $obj_grade += 0;
+        }
+
+        if ($b8 == 43.5) {
+            $obj_grade += 5;
+        } else {
+            $obj_grade += 0;
+        }
+
+        if ($c1 <= 2450 && $c1 >= 2390) {
+            $obj_grade += 5;
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($c3<=20 && $c3>=275){
+        if ($c2 <= 43 && $c2 >= 45) {
             $obj_grade += 5;
-        }else{
-            $obj_grade += 0;
-        }
-
-        if ($d1 == 'a' || $d1 == 'A'){
-            $obj_grade += 5;
-        }else{
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($d2 == 'b' || $d2 == 'B'){
+        if ($c3 <= 20 && $c3 >= 275) {
             $obj_grade += 5;
-        }else{
+        } else {
+            $obj_grade += 0;
+        }
+
+        if ($d1 == 'a' || $d1 == 'A') {
+            $obj_grade += 5;
+        } else {
             $obj_grade += 0;
         }
 
 
-        if ($d3 == 'c' || $d3 == 'C'){
+        if ($d2 == 'b' || $d2 == 'B') {
             $obj_grade += 5;
-        }else{
+        } else {
+            $obj_grade += 0;
+        }
+
+
+        if ($d3 == 'c' || $d3 == 'C') {
+            $obj_grade += 5;
+        } else {
             $obj_grade += 0;
         }
 
@@ -177,7 +178,7 @@ class exp_ans4 extends Model
         DB::table('exp_4')->insert([
             'stu_id' => $stu_id,
             'class' => $class,
-            'obj_grade' =>$obj_grade
+            'obj_grade' => $obj_grade
         ]);
         self::create([
             'stu_id' => $stu_id,
@@ -201,7 +202,7 @@ class exp_ans4 extends Model
         ]);
 
         return 1;
-
+    }
 
     /**
      * 检查实验的记录表中是否存在此学生的记录
@@ -244,5 +245,17 @@ class exp_ans4 extends Model
             return false;
         }
 
+    }
+
+    public static function checknumber4($stu_id)
+    {
+        try{
+            $cunt = exp_ans4::select('stu_id')
+                ->where('stu_id',$stu_id)
+                ->count();
+            return $cunt;
+        }catch (\Exception $e) {
+            logError("账号查询失败！", [$e->getMessage()]);
+        }
     }
 }

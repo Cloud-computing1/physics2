@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\stu_info;
 use App\Models\student;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;

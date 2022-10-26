@@ -43,13 +43,14 @@ class exp_ans3 extends Model
     public static function checknumber3($stu_id)
     {
         try{
-            $cunt = exp_ans1::select('stu_id')
+            $cunt = exp_ans3::select('stu_id')
                 ->where('stu_id',$stu_id)
                 ->count();
             return $cunt;
         }catch (\Exception $e) {
             logError("账号查询失败！", [$e->getMessage()]);
-
+        }
+    }
 
     /**
      * 检查实验的记录表中是否存在此学生的记录
