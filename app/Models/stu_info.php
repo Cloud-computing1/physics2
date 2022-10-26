@@ -2,19 +2,62 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
-class stu_info extends Model
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class stu_info extends Model implements JWTSubject
 {
-    // 指定数据表
-    protected $table = "stu_info";
-    // 指定开启时间戳
-    public $timestamps = true;
-    // 指定主键
-    protected $primaryKey = "id";
-    // 指定不允许自动填充的字段，字段修改的黑名单
+    use Notifiable;
+
+    protected $table = 'stu_info';
+    protected $remeberTokenName = NULL;
     protected $guarded = [];
+    protected $fillable=['level','grade','major','class','stu_name','stu_id'];
+
+
+
+    public function getJWTCustomClaims()
+    {
+        // TODO: Implement getJWTCustomClaims() method.
+        return [];
+    }
+
+
+
+
+    public function getJWTIdentifier()
+    {
+        // TODO: Implement getJWTIdentifier() method.
+        return $this->getKey();
+    }
+
+
+
+    /**
+     * 填写学生个人学生信息
+     * @param $stu_name
+     * @param $level
+     * @param $grade
+     * @param $major
+     * @param $class
+     * @param $stu_id
+     * @return mixed
+     */
+    public static function stu_create($stu_name,$level,$grade,$major,$class,$stu_id)
+    {
+            return self::create([
+                'stu_name'=>$stu_name,
+                'level' => $level,
+                'grade' => $grade,
+                'major' => $major,
+                'class' => $class,
+                'stu_id'=> $stu_id,
+            ]);
+        }
+
 
 
     /**
@@ -79,4 +122,5 @@ class stu_info extends Model
             return false;
         }
     }
+
 }
