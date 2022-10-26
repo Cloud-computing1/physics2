@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Database\Eloquent\Model;
@@ -78,9 +79,29 @@ class student extends Authenticatable implements JWTSubject
         } catch (\Exception $e) {
             logError('添加用户失败!', [$e->getMessage()]);
             die($e->getMessage());
+
+
+    /**
+     * 查询所有学生的信息
+     *
+     * @return
+     */
+    public static function get_stus_info()
+    {
+        try {
+            $res = self::join('stu_info', 'student.stu_id', 'stu_info.stu_id')
+                ->join('teach_class', 'stu_info.class', 'teach_class.class')
+                ->select('student.stu_id as stu_id', 'stu_info.stu_name as stu_name', 'student.email as email',
+                    'stu_info.class as class', 'stu_info.level as level', 'teach_class.teacher_name as teacher_name')
+                ->get();
+            return $res;
+        } catch (\Exception $e) {
+            logError('查询所有学生的信息失败！', [$e->getMessage()]);
+
             return false;
         }
     }
+
 
 
 
@@ -113,4 +134,24 @@ class student extends Authenticatable implements JWTSubject
     {
         return ['stu_id' =>$request['stu_id'],'password' => $request['password']];
     }
+
+    /**
+     * 删除学生的基本信息和账号
+     *
+     * @param $stu_id
+     * @return bool
+     */
+    public static function del_stu($stu_id)
+    {
+        try {
+            self::where('stu_id', '=', $stu_id)->delete();
+            DB::table('stu_info')->where('stu_id', '=', $stu_id)->delete();
+            return true;
+        } catch (\Exception $e) {
+            logError('删除学生' . $stu_id . '失败！', [$e->getMessage()]);
+            return false;
+        }
+    }
+
+
 }
